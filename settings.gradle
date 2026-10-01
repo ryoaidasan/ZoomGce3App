@@ -1,0 +1,2 @@
+rootProject.name = "ZoomGce3App"
+include ':app'
