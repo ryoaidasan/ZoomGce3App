@@ -9,23 +9,26 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout Source
+      uses: actions/checkout@v4
 
     - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: gradle
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew || true
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
+      with:
+        gradle-version: '8.2'
 
     - name: Build with Gradle
-      run: gradle assembleDebug
+      run: gradle assembleDebug --stacktrace
 
     - name: Upload APK Artifact
       uses: actions/upload-artifact@v4
+      if: success()
       with:
         name: zoom-gce3-app
         path: app/build/outputs/apk/debug/*.apk
